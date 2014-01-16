@@ -1,0 +1,86 @@
+{
+    "versionLabel": "1.0",
+    "uuid": "2d8c47f0-fd3f-4df4-927c-54483fd33196",
+    "appKeys": {},
+    "longName": "Digalog",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Digalog",
+    "companyName": "Stopka",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "png",
+                "name": "BLUETOOTH_NONE",
+                "file": "images/bluetooth_none.png"
+            },
+            {
+                "type": "png",
+                "name": "BATTERY_LOW",
+                "file": "images/battery_low.png"
+            },
+            {
+                "type": "png",
+                "name": "BATTERY_CHARGING_LOW",
+                "file": "images/battery_charging_low.png"
+            },
+            {
+                "type": "png",
+                "name": "BATTERY_CHARGING_HALF",
+                "file": "images/battery_charging_half.png"
+            },
+            {
+                "type": "png",
+                "name": "BATTERY_FULL",
+                "file": "images/battery_full.png"
+            },
+            {
+                "type": "png",
+                "name": "BATTERY_EMPTY",
+                "file": "images/battery_empty.png"
+            },
+            {
+                "type": "png-trans",
+                "name": "MINUTE",
+                "file": "images/minute.png"
+            },
+            {
+                "type": "png-trans",
+                "name": "HOUR",
+                "file": "images/hour.png"
+            },
+            {
+                "type": "png-trans",
+                "name": "CENTER",
+                "file": "images/center.png"
+            },
+            {
+                "type": "png",
+                "name": "BACKGROUND",
+                "file": "images/background.png"
+            },
+            {
+                "characterRegex": "[a-z.0-9]",
+                "type": "font",
+                "name": "FONT_12",
+                "file": "fonts/Roboto-Regular.ttf"
+            },
+            {
+                "characterRegex": "[0-9]",
+                "type": "font",
+                "name": "FONT_BOLD_24",
+                "file": "fonts/Roboto-Bold.ttf"
+            },
+            {
+                "type": "png",
+                "name": "LOGO",
+                "file": "images/logo.png"
+            }
+        ]
+    }
+}
