@@ -65,18 +65,19 @@
                 "file": "images/background.png"
             },
             {
-                "characterRegex": "[a-z.0-9]",
+                "characterRegex": "[A-Za-z.0-9]",
                 "type": "font",
-                "name": "FONT_12",
+                "name": "FONT_22",
                 "file": "fonts/Roboto-Regular.ttf"
             },
             {
                 "characterRegex": "[0-9]",
                 "type": "font",
-                "name": "FONT_BOLD_24",
+                "name": "FONT_BOLD_35",
                 "file": "fonts/Roboto-Bold.ttf"
             },
             {
+                "menuIcon": true,
                 "type": "png",
                 "name": "LOGO",
                 "file": "images/logo.png"
