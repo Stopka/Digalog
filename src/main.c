@@ -65,7 +65,7 @@ static void window_load(Window *window) {
 	text_layer_set_background_color	(texts[0],GColorClear);
 	text_layer_set_text_color(texts[0],GColorWhite);
 	text_layer_set_text_alignment(texts[0], GTextAlignmentCenter);
-	text_layer_set_text	(texts[0],"00");
+	text_layer_set_text	(texts[0],"22");
 	layer_add_child((Layer *)digital_time, (Layer *)texts[0]);
 	
 	texts[1]=text_layer_create(GRect(65, 0, 60, 100));
@@ -73,7 +73,7 @@ static void window_load(Window *window) {
 	text_layer_set_background_color	(texts[1],GColorClear);
 	text_layer_set_text_color(texts[1],GColorWhite);
 	text_layer_set_text_alignment(texts[1], GTextAlignmentCenter);
-	text_layer_set_text	(texts[1],"00");
+	text_layer_set_text	(texts[1],"11");
 	layer_add_child((Layer *)digital_time, (Layer *)texts[1]);
 	
 	//date
@@ -82,7 +82,7 @@ static void window_load(Window *window) {
 	text_layer_set_background_color	(texts[2],GColorClear);
 	text_layer_set_text_color(texts[2],GColorWhite);
 	text_layer_set_text_alignment(texts[2], GTextAlignmentCenter);
-	text_layer_set_text	(texts[2],"Monday");
+	text_layer_set_text	(texts[2],"Saturday");
 	layer_add_child(window_get_root_layer(window), (Layer *)texts[2]);
 	
 	texts[3]=text_layer_create(GRect(0, 168-23, 144, 100));
@@ -94,15 +94,27 @@ static void window_load(Window *window) {
 	layer_add_child(window_get_root_layer(window), (Layer *)texts[3]);
 }
 
+static void update_time(struct tm *tick_time, TimeUnits units_changed){
+	strftime((char*)text_layer_get_text(texts[0]),3,clock_is_24h_style()?"%H":"%I",tick_time);
+	layer_mark_dirty((Layer *)texts[0]);
+	strftime((char*)text_layer_get_text(texts[1]),3,"%M",tick_time);
+	layer_mark_dirty((Layer *)texts[1]);
+	strftime((char*)text_layer_get_text(texts[2]),9,"%A",tick_time);
+	layer_mark_dirty((Layer *)texts[2]);
+	strftime((char*)text_layer_get_text(texts[3]),11,"%d.%m.%Y",tick_time);
+	layer_mark_dirty((Layer *)texts[3]);
+}
+
 static void window_appear(Window *window) {
-	/*stopwatch_window_update_time();
-	if(stopwatch_model_isRunning()){
-		tick_timer_service_subscribe(SECOND_UNIT, handle_tick);
-	}*/
+	time_t now_time_t=time(NULL);	
+	struct tm * now_tm=localtime(&now_time_t);
+	update_time(now_tm,SECOND_UNIT);
+	//free(now_tm);
+	tick_timer_service_subscribe(MINUTE_UNIT, update_time);
 }
 
 static void window_disappear(Window *window) {
-	//tick_timer_service_unsubscribe();
+	tick_timer_service_unsubscribe();
 }
 
 static void window_unload(Window *window) {
