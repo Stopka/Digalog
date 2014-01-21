@@ -65,7 +65,7 @@
                 "file": "images/background.png"
             },
             {
-                "characterRegex": "[A-Za-z.0-9]",
+                "characterRegex": "[SMTWFdayunoeshrit.0-9]",
                 "type": "font",
                 "name": "FONT_22",
                 "file": "fonts/Roboto-Regular.ttf"
@@ -73,7 +73,7 @@
             {
                 "characterRegex": "[0-9]",
                 "type": "font",
-                "name": "FONT_BOLD_35",
+                "name": "FONT_BOLD_38",
                 "file": "fonts/Roboto-Bold.ttf"
             },
             {

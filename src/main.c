@@ -1,6 +1,6 @@
 #include <pebble.h>
 #define FONT RESOURCE_ID_FONT_22
-#define FONT_BOLD RESOURCE_ID_FONT_BOLD_35
+#define FONT_BOLD RESOURCE_ID_FONT_BOLD_38
 	
 Window *window;
 BitmapLayer* analog_background;
@@ -44,23 +44,14 @@ static void window_load(Window *window) {
 	bitmap_layer_set_compositing_mode(analog_center[1], GCompOpClear);
 	layer_add_child(analog,(Layer*)analog_center[0]);
 	layer_add_child(analog,(Layer*)analog_center[1]);
-	/*
-	analog_hands[0]=rot_bitmap_layer_create(bitmaps[3]);
-	analog_hands[1]=rot_bitmap_layer_create(bitmaps[4]);
-	layer_set_frame((Layer *)analog_hands[0],GRect(0, 0, 8, 51));
-	layer_set_frame((Layer *)analog_hands[1],GRect(0, 0, 8, 51));
-	bitmap_layer_set_compositing_mode((BitmapLayer*)analog_hands[0], GCompOpOr);
-	bitmap_layer_set_compositing_mode((BitmapLayer*)analog_hands[1], GCompOpClear);
-	layer_add_child(analog,(Layer*)analog_hands[0]);
-	layer_add_child(analog,(Layer*)analog_hands[1]);*/
 	
 	layer_add_child(window_get_root_layer(window), (Layer*)analog);
 	
 	//Digital time
-	digital_time=layer_create(GRect(0, 43, 130, 100));
+	digital_time=layer_create(GRect(0, 41, 130, 100));
 	layer_add_child((Layer*)analog, (Layer*)digital_time);
 	
-	texts[0]=text_layer_create(GRect(5, 0, 60, 100));
+	texts[0]=text_layer_create(GRect(6, 0, 59, 100));
 	text_layer_set_font(texts[0],fonts[0]);
 	text_layer_set_background_color	(texts[0],GColorClear);
 	text_layer_set_text_color(texts[0],GColorWhite);
@@ -68,7 +59,7 @@ static void window_load(Window *window) {
 	text_layer_set_text	(texts[0],"22");
 	layer_add_child((Layer *)digital_time, (Layer *)texts[0]);
 	
-	texts[1]=text_layer_create(GRect(65, 0, 60, 100));
+	texts[1]=text_layer_create(GRect(65, 0, 59, 100));
 	text_layer_set_font(texts[1],fonts[0]);
 	text_layer_set_background_color	(texts[1],GColorClear);
 	text_layer_set_text_color(texts[1],GColorWhite);
@@ -82,7 +73,7 @@ static void window_load(Window *window) {
 	text_layer_set_background_color	(texts[2],GColorClear);
 	text_layer_set_text_color(texts[2],GColorWhite);
 	text_layer_set_text_alignment(texts[2], GTextAlignmentCenter);
-	text_layer_set_text	(texts[2],"Saturday");
+	text_layer_set_text	(texts[2],"Wednesday");
 	layer_add_child(window_get_root_layer(window), (Layer *)texts[2]);
 	
 	texts[3]=text_layer_create(GRect(0, 168-23, 144, 100));
@@ -99,7 +90,7 @@ static void update_time(struct tm *tick_time, TimeUnits units_changed){
 	layer_mark_dirty((Layer *)texts[0]);
 	strftime((char*)text_layer_get_text(texts[1]),3,"%M",tick_time);
 	layer_mark_dirty((Layer *)texts[1]);
-	strftime((char*)text_layer_get_text(texts[2]),9,"%A",tick_time);
+	strftime((char*)text_layer_get_text(texts[2]),10,"%A",tick_time);
 	layer_mark_dirty((Layer *)texts[2]);
 	strftime((char*)text_layer_get_text(texts[3]),11,"%d.%m.%Y",tick_time);
 	layer_mark_dirty((Layer *)texts[3]);
