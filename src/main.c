@@ -43,13 +43,12 @@ const GPathInfo MINUTE_PATH = {
 // Window handlers
 ///////////////////////////
 static void render_center(Layer *layer, GContext* ctx){
-	graphics_context_set_fill_color(ctx, GColorWhite);
-	graphics_context_set_stroke_color(ctx, GColorBlack);
-	
 	GRect bounds = layer_get_bounds(layer);
 	GPoint center = grect_center_point(&bounds);
+	graphics_context_set_fill_color(ctx, GColorBlack);
 	graphics_fill_circle(ctx, center, 6);
-	graphics_draw_circle(ctx, center, 6);
+	graphics_context_set_fill_color(ctx, GColorWhite);
+	graphics_fill_circle(ctx, center, 5);
 }
 
 static void render_minute(Layer *layer, GContext* ctx){
@@ -108,7 +107,7 @@ static void window_load(Window *window) {
 	paths[1] = gpath_create(&MINUTE_PATH);
   	gpath_move_to(paths[1], center);
 	
-	analog_time[2]=layer_create(GRect(59, 59, 12, 12));
+	analog_time[2]=layer_create(GRect(58, 58, 13, 13));
 	layer_set_update_proc(analog_time[2], render_center);
 	layer_add_child(analog,analog_time[2]);
 	
@@ -187,16 +186,17 @@ int getBatteryState(BatteryChargeState charge_state){
 		}
 		return 3;
 	}
-	if(charge_state.charge_percent<5){
+	if(charge_state.charge_percent<=5){
 		return 4;
 	}
-	if(charge_state.charge_percent<10){
+	if(charge_state.charge_percent<=20){
 		return 5;
 	}
 	return 0;
 }
 
 static void update_battery(BatteryChargeState charge_state) {
+	APP_LOG(APP_LOG_LEVEL_INFO,"Battery: %i %i",charge_state.charge_percent,charge_state.is_charging);
     int state=getBatteryState(charge_state);
 	if(state==battery_state){
 		return;
