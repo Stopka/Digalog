@@ -1,5 +1,5 @@
 {
-    "versionLabel": "1.0",
+    "versionLabel": "3.0",
     "uuid": "2d8c47f0-fd3f-4df4-927c-54483fd33196",
     "appKeys": {},
     "longName": "Digalog",
@@ -43,21 +43,6 @@
                 "type": "png",
                 "name": "BATTERY_EMPTY",
                 "file": "images/battery_empty.png"
-            },
-            {
-                "type": "png-trans",
-                "name": "MINUTE",
-                "file": "images/minute.png"
-            },
-            {
-                "type": "png-trans",
-                "name": "HOUR",
-                "file": "images/hour.png"
-            },
-            {
-                "type": "png-trans",
-                "name": "CENTER",
-                "file": "images/center.png"
             },
             {
                 "type": "png",
