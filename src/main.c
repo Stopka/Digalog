@@ -11,7 +11,8 @@ Layer* analog;
 Layer* digital_time;
 #define COUNT_TEXTS 4
 TextLayer* texts[COUNT_TEXTS];
-GPath *paths[2];
+#define COUNT_PATHS 2
+GPath *paths[COUNT_PATHS];
 #define COUNT_FONTS 2
 GFont fonts[COUNT_FONTS];//0=time,1=rest
 //////////////////////////
@@ -52,26 +53,24 @@ static void render_center(Layer *layer, GContext* ctx){
 }
 
 static void render_minute(Layer *layer, GContext* ctx){
-	graphics_context_set_fill_color(ctx, GColorWhite);
-	graphics_context_set_stroke_color(ctx, GColorBlack);
-	
 	time_t now = time(NULL);
   	struct tm *t = localtime(&now);
   	unsigned int angle = t->tm_min*6;
+	graphics_context_set_fill_color(ctx, GColorWhite);
 	gpath_rotate_to(paths[1], angle*TRIG_MAX_ANGLE/360);
 	gpath_draw_filled(ctx, paths[1]);
+	graphics_context_set_stroke_color(ctx, GColorBlack);
 	gpath_draw_outline(ctx, paths[1]);
 }
 
 static void render_hour(Layer *layer, GContext* ctx){
-	graphics_context_set_fill_color(ctx, GColorWhite);
-	graphics_context_set_stroke_color(ctx, GColorBlack);
-	
 	time_t now = time(NULL);
   	struct tm *t = localtime(&now);
   	unsigned int angle = ((t->tm_hour % 12) * 30)+ (t->tm_min/2);
+	graphics_context_set_fill_color(ctx, GColorWhite);
 	gpath_rotate_to(paths[0], angle*TRIG_MAX_ANGLE/360);
 	gpath_draw_filled(ctx, paths[0]);
+	graphics_context_set_stroke_color(ctx, GColorBlack);
 	gpath_draw_outline(ctx, paths[0]);
 }
 
@@ -91,25 +90,6 @@ static void window_load(Window *window) {
 	layer_add_child(analog,(Layer*)notifications[0]);
 	notifications[1]=bitmap_layer_create(GRect(57, 90, 16, 16));
 	layer_add_child(analog,(Layer*)notifications[1]);
-	
-	//Analog time
-	GRect bounds = layer_get_bounds(analog);
-	GPoint center=grect_center_point(&bounds);
-	analog_time[0]=layer_create(bounds);
-	layer_set_update_proc(analog_time[0], render_hour);
-	layer_add_child(analog,(Layer*)analog_time[0]);
-	paths[0] = gpath_create(&HOUR_PATH);
-  	gpath_move_to(paths[0], center);
-	
-	analog_time[1]=layer_create(bounds);
-	layer_set_update_proc(analog_time[1], render_minute);
-	layer_add_child(analog,(Layer*)analog_time[1]);
-	paths[1] = gpath_create(&MINUTE_PATH);
-  	gpath_move_to(paths[1], center);
-	
-	analog_time[2]=layer_create(GRect(58, 58, 13, 13));
-	layer_set_update_proc(analog_time[2], render_center);
-	layer_add_child(analog,analog_time[2]);
 	
 	//Digital time
 	digital_time=layer_create(GRect(0, 41, 130, 100));
@@ -147,6 +127,26 @@ static void window_load(Window *window) {
 	text_layer_set_text_alignment(texts[3], GTextAlignmentCenter);
 	text_layer_set_text	(texts[3],"00.00.0000");
 	layer_add_child(window_get_root_layer(window), (Layer *)texts[3]);
+	
+	//Analog time
+	GRect bounds = layer_get_bounds(analog);
+	GPoint center=grect_center_point(&bounds);
+	
+	analog_time[0]=layer_create(bounds);
+	layer_set_update_proc(analog_time[0], render_hour);
+	layer_add_child(analog,(Layer*)analog_time[0]);
+	paths[0] = gpath_create(&HOUR_PATH);
+  	gpath_move_to(paths[0], center);
+	
+	analog_time[1]=layer_create(bounds);
+	layer_set_update_proc(analog_time[1], render_minute);
+	layer_add_child(analog,(Layer*)analog_time[1]);
+	paths[1] = gpath_create(&MINUTE_PATH);
+  	gpath_move_to(paths[1], center);
+	
+	analog_time[2]=layer_create(GRect(58, 58, 13, 13));
+	layer_set_update_proc(analog_time[2], render_center);
+	layer_add_child(analog,analog_time[2]);
 }
 
 static void update_time(struct tm *tick_time, TimeUnits units_changed){
@@ -160,7 +160,6 @@ static void update_time(struct tm *tick_time, TimeUnits units_changed){
 	layer_mark_dirty((Layer *)texts[3]);
 	layer_mark_dirty(analog_time[0]);
 	layer_mark_dirty(analog_time[1]);
-	layer_mark_dirty(analog_time[2]);
 }
 
 static void update_bluetooth(bool connected) {
@@ -270,8 +269,9 @@ static void window_unload(Window *window) {
 		layer_destroy(analog_time[2]);
 	}
 	
-	gpath_destroy(paths[0]);
-	gpath_destroy(paths[1]);
+	for(int i=0;i<COUNT_PATHS;i++){
+		gpath_destroy(paths[i]);
+	}
 
 	for(int i=0;i<2;i++){
 		btm=(GBitmap*)bitmap_layer_get_bitmap(notifications[i]);
