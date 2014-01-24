@@ -7,6 +7,7 @@ BitmapLayer* analog_background;
 Layer* analog_time[3];
 BitmapLayer* notifications[2];
 int battery_state=0;
+bool bluetooth_state=false;
 Layer* analog;
 Layer* digital_time;
 #define COUNT_TEXTS 4
@@ -18,25 +19,19 @@ GFont fonts[COUNT_FONTS];//0=time,1=rest
 //////////////////////////
 //Paths
 const GPathInfo HOUR_PATH = {
-  6,
+  3,
   (GPoint []) {
-    {0, -40},
-	{-4, -32},
-    {-4, 0},
-	{0, 0},
-    {4,  0},
-	{4, -32},
+    {0, -55},
+	{-8, -41},
+	{8, -41},
   }
 };
 const GPathInfo MINUTE_PATH = {
-  6,
+  3,
   (GPoint []) {
-    {0, -60},
-	{-4, -52},
-    {-4, -0},
-	{0, 0},
-    {4,  -0},
-	{4, -52},
+    {0, -68},
+	{-8, -50},
+	{8, -50},
   }
 };
 
@@ -170,8 +165,11 @@ static void update_bluetooth(bool connected) {
 	}
 	if(btm==NULL&&!connected){//prave odpojeno?
 		bitmap_layer_set_bitmap(notifications[1],gbitmap_create_with_resource(RESOURCE_ID_BLUETOOTH_NONE));
-		vibes_long_pulse();
+		if(bluetooth_state){
+			vibes_double_pulse();
+		}
 	}
+	bluetooth_state=true;
 	layer_mark_dirty((Layer *)notifications[1]);
 }
 
@@ -180,7 +178,7 @@ int getBatteryState(BatteryChargeState charge_state){
 		if(charge_state.charge_percent==100){
 			return 1;
 		}
-		if(charge_state.charge_percent>=50){
+		if(charge_state.charge_percent>=40){
 			return 2;
 		}
 		return 3;
@@ -211,7 +209,7 @@ static void update_battery(BatteryChargeState charge_state) {
 			btm=gbitmap_create_with_resource(RESOURCE_ID_BATTERY_FULL);
 			break;
 		case 2:
-			btm=gbitmap_create_with_resource(RESOURCE_ID_BATTERY_CHARGING_HALF);
+			btm=gbitmap_create_with_resource(RESOURCE_ID_BATTERY_CHARGING_FULL);
 			break;
 		case 3:
 			btm=gbitmap_create_with_resource(RESOURCE_ID_BATTERY_CHARGING_LOW);

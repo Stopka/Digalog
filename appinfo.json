@@ -16,6 +16,11 @@
         "media": [
             {
                 "type": "png",
+                "name": "BATTERY_CHARGING_FULL",
+                "file": "images/battery_charging_full.png"
+            },
+            {
+                "type": "png",
                 "name": "BLUETOOTH_NONE",
                 "file": "images/bluetooth_none.png"
             },
@@ -28,11 +33,6 @@
                 "type": "png",
                 "name": "BATTERY_CHARGING_LOW",
                 "file": "images/battery_charging_low.png"
-            },
-            {
-                "type": "png",
-                "name": "BATTERY_CHARGING_HALF",
-                "file": "images/battery_charging_half.png"
             },
             {
                 "type": "png",
