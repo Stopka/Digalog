@@ -21,7 +21,7 @@ GFont fonts[COUNT_FONTS];//0=time,1=rest
 const GPathInfo HOUR_PATH = {
   3,
   (GPoint []) {
-    {0, -55},
+    {0, -51},
 	{-8, -41},
 	{8, -41},
   }
