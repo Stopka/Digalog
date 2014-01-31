@@ -178,7 +178,7 @@ int getBatteryState(BatteryChargeState charge_state){
 		if(charge_state.charge_percent==100){
 			return 1;
 		}
-		if(charge_state.charge_percent>=40){
+		if(charge_state.charge_percent>=50){
 			return 2;
 		}
 		return 3;
@@ -186,7 +186,7 @@ int getBatteryState(BatteryChargeState charge_state){
 	if(charge_state.charge_percent<=5){
 		return 4;
 	}
-	if(charge_state.charge_percent<=20){
+	if(charge_state.charge_percent<=10){
 		return 5;
 	}
 	return 0;
