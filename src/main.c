@@ -56,6 +56,7 @@ static void render_minute(Layer *layer, GContext* ctx){
 	gpath_draw_filled(ctx, paths[1]);
 	graphics_context_set_stroke_color(ctx, GColorBlack);
 	gpath_draw_outline(ctx, paths[1]);
+	
 }
 
 static void render_hour(Layer *layer, GContext* ctx){
@@ -70,7 +71,7 @@ static void render_hour(Layer *layer, GContext* ctx){
 }
 
 static void window_load(Window *window) {
-	analog=layer_create	(GRect(7, 19, 130, 130));
+	analog=layer_create	(GRect(7, 19, 150, 150));
 	layer_add_child(window_get_root_layer(window), (Layer*)analog);
 
 	fonts[0]=fonts_load_custom_font(resource_get_handle(FONT_BOLD));
@@ -124,10 +125,11 @@ static void window_load(Window *window) {
 	layer_add_child(window_get_root_layer(window), (Layer *)texts[3]);
 	
 	//Analog time
-	GRect bounds = layer_get_bounds(analog);
-	GPoint center=grect_center_point(&bounds);
+	GRect bounds = GRect(0, 0, 150, 150);
+	GPoint center=GPoint(65,65);
 	
 	analog_time[0]=layer_create(bounds);
+	layer_set_clips	(analog_time[0],false);
 	layer_set_update_proc(analog_time[0], render_hour);
 	layer_add_child(analog,(Layer*)analog_time[0]);
 	paths[0] = gpath_create(&HOUR_PATH);
