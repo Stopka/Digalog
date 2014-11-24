@@ -40,3 +40,25 @@ void renderers_hour(Layer *layer, GContext* ctx){
 	graphics_context_set_stroke_color(ctx, GColorWhite);
 	gpath_draw_outline(ctx, path);
 }
+
+void format_text_time(TextLayer* layer,struct tm* time,size_t max,const char* fmt){
+	char* buffer=(char*)text_layer_get_text(layer);
+	strftime(buffer,max,fmt,time);
+	layer_mark_dirty(text_layer_get_layer(layer));
+}
+
+void renderers_text_minute(TextLayer *layer,struct tm* time){
+	format_text_time(layer,time,3,"%M");
+}
+
+void renderers_text_hour(TextLayer *layer,struct tm* time){
+	format_text_time(layer,time,3,clock_is_24h_style()?"%H":"%I");
+}
+
+void renderers_text_day(TextLayer *layer,struct tm* time){
+	format_text_time(layer,time,31,"%A");
+}
+
+void renderers_text_date(TextLayer *layer,struct tm* time){
+	format_text_time(layer,time,31,"%d. %m. %Y");
+}

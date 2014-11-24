@@ -1,8 +1,8 @@
 #include <pebble.h>
 #include "window_main.h"
 #include "bitmap-loader.h"
-#include "fonts.h"
 #include "renderers.h"
+#include "builder.h"
 
 #define TEXT_LAYERS_COUNT 4
 #define TEXT_LAYER_DAY 0
@@ -10,19 +10,16 @@
 #define TEXT_LAYER_HOUR 2
 #define TEXT_LAYER_MINUTE 3
 TextLayer* text_layers[TEXT_LAYERS_COUNT];
-char* text_layer_buffers[TEXT_LAYERS_COUNT];
 
-#define BITMAP_LAYERS_COUNT 3
-#define BITMAP_LAYER_BACKGROUND 0
-#define BITMAP_LAYER_NOTIFICATION 1 //2 items
 BitmapLayer* bitmap_layer;
 
 InverterLayer* inverter_layer;
 
-#define LAYERS_COUNT 3
+#define LAYERS_COUNT 4
 #define LAYER_CENTER 0
 #define LAYER_HOUR 1
 #define LAYER_MINUTE 2
+#define LAYER_NOTIFICATION 3
 Layer* layers[LAYERS_COUNT];
 
 int battery_state=0;
@@ -71,18 +68,14 @@ static void render_hour(Layer *layer, GContext* ctx){
 
 
 void handle_tick(struct tm* tick_time, TimeUnits units_changed){
-	//Hours
-	strftime((char*)text_layer_buffers[TEXT_LAYER_HOUR],3,clock_is_24h_style()?"%H":"%I",tick_time);
-	layer_mark_dirty((Layer *)text_layers[TEXT_LAYER_HOUR]);
-	//Minutes
-	strftime((char*)text_layer_buffers[TEXT_LAYER_MINUTE],3,"%M",tick_time);
-	layer_mark_dirty((Layer *)text_layers[TEXT_LAYER_MINUTE]);
-	//Week day
-	strftime((char*)text_layer_buffers[TEXT_LAYER_DAY],30,"%A",tick_time);
-	layer_mark_dirty((Layer *)text_layers[TEXT_LAYER_DAY]);
-	//Date
-	strftime((char*)text_layer_buffers[TEXT_LAYER_DATE],30,"%d. %m. %Y",tick_time);
-	layer_mark_dirty((Layer *)text_layers[TEXT_LAYER_DATE]);
+	if(tick_time==NULL){
+		time_t now_time_t=time(NULL);	
+		tick_time=localtime(&now_time_t);
+	}
+	renderers_text_hour(text_layers[TEXT_LAYER_HOUR],tick_time);
+	renderers_text_minute(text_layers[TEXT_LAYER_MINUTE],tick_time);
+	renderers_text_date(text_layers[TEXT_LAYER_DATE],tick_time);
+	renderers_text_day(text_layers[TEXT_LAYER_DAY],tick_time);
 	//Analog
 	//layer_mark_dirty(analog_time[0]);
 	//layer_mark_dirty(analog_time[1]);
@@ -96,61 +89,22 @@ static void window_load(Window* window){
 	bitmap_layer_set_bitmap(bitmap_layer,bitmaps_get_bitmap(RESOURCE_ID_BACKGROUND));
 	layer_add_child(window_layer, bitmap_layer_get_layer(bitmap_layer));
 	
-	text_layer_buffers[TEXT_LAYER_DAY]=(char *)malloc(31*sizeof(char));
-	text_layers[TEXT_LAYER_DAY] = text_layer_create(GRect(0, -5, bounds.size.w, 28));
-  text_layer_set_text(text_layers[TEXT_LAYER_DAY], text_layer_buffers[TEXT_LAYER_DAY]);
-	text_layer_set_font(text_layers[TEXT_LAYER_DAY],fonts_get(FONT_DAY));
-	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DAY],GTextAlignmentCenter);
-	text_layer_set_background_color(text_layers[TEXT_LAYER_DAY],GColorClear);
-	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_DAY]));
+	text_layers[TEXT_LAYER_DAY] = builder_text_layer(GRect(0, -5, bounds.size.w, 28),window_layer,31,GTextAlignmentCenter,FONT_DAY);
+	text_layers[TEXT_LAYER_DATE] = builder_text_layer(GRect(0, bounds.size.h-24, bounds.size.w, 24),window_layer,31,GTextAlignmentCenter,FONT_DATE);
+	text_layers[TEXT_LAYER_HOUR] = builder_text_layer(GRect(-8, bounds.size.h/2-(46/2), bounds.size.w/2, 40),window_layer,3,GTextAlignmentRight,FONT_HOUR);
+	text_layers[TEXT_LAYER_MINUTE] = builder_text_layer(GRect(bounds.size.w/2+8, bounds.size.h/2-(46/2), bounds.size.w/2, 40),window_layer,3,GTextAlignmentLeft,FONT_MINUTE);
 	
-	text_layer_buffers[TEXT_LAYER_DATE]=(char *)malloc(31*sizeof(char));
-	text_layers[TEXT_LAYER_DATE] = text_layer_create(GRect(0, bounds.size.h-24, bounds.size.w, 24));
-  text_layer_set_text(text_layers[TEXT_LAYER_DATE], text_layer_buffers[TEXT_LAYER_DATE]);
-	text_layer_set_font(text_layers[TEXT_LAYER_DATE],fonts_get(FONT_DATE));
-	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DATE],GTextAlignmentCenter);
-	text_layer_set_background_color(text_layers[TEXT_LAYER_DATE],GColorClear);
-	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_DATE]));
-	
-	text_layer_buffers[TEXT_LAYER_HOUR]=(char *)malloc(3*sizeof(char));
-	text_layers[TEXT_LAYER_HOUR] = text_layer_create(GRect(-8, bounds.size.h/2-(46/2), bounds.size.w/2, 40));
-  text_layer_set_text(text_layers[TEXT_LAYER_HOUR], text_layer_buffers[TEXT_LAYER_HOUR]);
-	text_layer_set_font(text_layers[TEXT_LAYER_HOUR],fonts_get(FONT_HOUR));
-	text_layer_set_text_alignment(text_layers[TEXT_LAYER_HOUR],GTextAlignmentRight);
-	text_layer_set_background_color(text_layers[TEXT_LAYER_HOUR],GColorClear);
-	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_HOUR]));
-	
-	text_layer_buffers[TEXT_LAYER_MINUTE]=(char *)malloc(3*sizeof(char));
-	text_layers[TEXT_LAYER_MINUTE] = text_layer_create(GRect(bounds.size.w/2+8, bounds.size.h/2-(46/2), bounds.size.w/2, 40));
-  text_layer_set_text(text_layers[TEXT_LAYER_MINUTE], text_layer_buffers[TEXT_LAYER_MINUTE]);
-	text_layer_set_font(text_layers[TEXT_LAYER_MINUTE],fonts_get(FONT_MINUTE));
-	text_layer_set_text_alignment(text_layers[TEXT_LAYER_MINUTE],GTextAlignmentLeft);
-	text_layer_set_background_color(text_layers[TEXT_LAYER_MINUTE],GColorClear);
-	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_MINUTE]));
-		
-	layers[LAYER_CENTER]=layer_create(GRect(0, (bounds.size.h-bounds.size.w)/2, bounds.size.w, bounds.size.w));
-	layer_set_clips	(layers[LAYER_CENTER],false);
-	layer_set_update_proc(layers[LAYER_CENTER], render_center);
-	layer_add_child(window_layer,layers[LAYER_CENTER]);
-	
-	layers[LAYER_HOUR]=layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
-	layer_set_clips	(layers[LAYER_HOUR],false);
-	layer_set_update_proc(layers[LAYER_HOUR], render_hour);
-	layer_add_child(window_layer,layers[LAYER_HOUR]);
-	
-	layers[LAYER_MINUTE]=layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
-	layer_set_clips	(layers[LAYER_MINUTE],false);
-	layer_set_update_proc(layers[LAYER_MINUTE], render_minute);
-	layer_add_child(window_layer,layers[LAYER_MINUTE]);
+	layers[LAYER_NOTIFICATION]=builder_layer(GRect(0, 0, bounds.size.w, bounds.size.h),window_layer,render_center);
+	layers[LAYER_CENTER]=builder_layer(GRect(0, (bounds.size.h-bounds.size.w)/2, bounds.size.w, bounds.size.w),window_layer,render_center);
+	layers[LAYER_HOUR]=builder_layer(GRect(0, 0, bounds.size.w, bounds.size.h),window_layer,render_hour);
+	layers[LAYER_MINUTE]=builder_layer(GRect(0, 0, bounds.size.w, bounds.size.h),window_layer,render_minute);
 	
 	inverter_layer=inverter_layer_create(GRect(0,0, bounds.size.w, bounds.size.h));
 	layer_add_child(window_layer, inverter_layer_get_layer(inverter_layer));
 }
 
 static void window_appear(Window *window) {
-	time_t now_time_t=time(NULL);	
-	struct tm* now_tm=localtime(&now_time_t);
-	handle_tick(now_tm,MINUTE_UNIT);	
+	handle_tick(NULL,MINUTE_UNIT);	
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_tick);
 }
 
@@ -162,9 +116,10 @@ static void window_disappear(Window *window) {
 static void window_unload(Window* window){
 	for(uint8_t i=0;i<TEXT_LAYERS_COUNT;i++){
 		if(text_layers[i]!=NULL){
+			char* buffer=(char*)text_layer_get_text(text_layers[i]);
 			text_layer_destroy(text_layers[i]);
 			text_layers[i]=NULL;
-			free(text_layer_buffers[i]);
+			free(buffer);
 		}
 	}
 	for(uint8_t i=0;i<LAYERS_COUNT;i++){
