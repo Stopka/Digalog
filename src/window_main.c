@@ -2,6 +2,7 @@
 #include "window_main.h"
 #include "bitmap-loader.h"
 #include "paths.h"
+#include "fonts.h"
 
 #define TEXT_LAYERS_COUNT 4
 #define TEXT_LAYER_DAY 0
@@ -126,7 +127,7 @@ static void window_load(Window* window){
 	text_layer_buffers[TEXT_LAYER_DAY]=(char *)malloc(31*sizeof(char));
 	text_layers[TEXT_LAYER_DAY] = text_layer_create(GRect(0, -7, bounds.size.w, 28));
   text_layer_set_text(text_layers[TEXT_LAYER_DAY], text_layer_buffers[TEXT_LAYER_DAY]);
-	text_layer_set_font(text_layers[TEXT_LAYER_DAY],fonts_get_system_font(FONT_KEY_GOTHIC_24));
+	text_layer_set_font(text_layers[TEXT_LAYER_DAY],fonts_get(FONT_DAY));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DAY],GTextAlignmentCenter);
 	text_layer_set_background_color(text_layers[TEXT_LAYER_DAY],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_DAY]));
@@ -134,24 +135,24 @@ static void window_load(Window* window){
 	text_layer_buffers[TEXT_LAYER_DATE]=(char *)malloc(31*sizeof(char));
 	text_layers[TEXT_LAYER_DATE] = text_layer_create(GRect(0, bounds.size.h-26, bounds.size.w, 24));
   text_layer_set_text(text_layers[TEXT_LAYER_DATE], text_layer_buffers[TEXT_LAYER_DATE]);
-	text_layer_set_font(text_layers[TEXT_LAYER_DATE],fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+	text_layer_set_font(text_layers[TEXT_LAYER_DATE],fonts_get(FONT_DATE));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DATE],GTextAlignmentCenter);
 	text_layer_set_background_color(text_layers[TEXT_LAYER_DATE],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_DATE]));
 	
 	text_layer_buffers[TEXT_LAYER_HOUR]=(char *)malloc(3*sizeof(char));
-	text_layers[TEXT_LAYER_HOUR] = text_layer_create(GRect((bounds.size.w-120)/2, bounds.size.h/2-(44/2), 120/2, 34));
+	text_layers[TEXT_LAYER_HOUR] = text_layer_create(GRect(-8, bounds.size.h/2-(46/2), bounds.size.w/2, 40));
   text_layer_set_text(text_layers[TEXT_LAYER_HOUR], text_layer_buffers[TEXT_LAYER_HOUR]);
-	text_layer_set_font(text_layers[TEXT_LAYER_HOUR],fonts_get_system_font(FONT_KEY_BITHAM_34_MEDIUM_NUMBERS));
-	text_layer_set_text_alignment(text_layers[TEXT_LAYER_HOUR],GTextAlignmentCenter);
+	text_layer_set_font(text_layers[TEXT_LAYER_HOUR],fonts_get(FONT_HOUR));
+	text_layer_set_text_alignment(text_layers[TEXT_LAYER_HOUR],GTextAlignmentRight);
 	text_layer_set_background_color(text_layers[TEXT_LAYER_HOUR],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_HOUR]));
 	
 	text_layer_buffers[TEXT_LAYER_MINUTE]=(char *)malloc(3*sizeof(char));
-	text_layers[TEXT_LAYER_MINUTE] = text_layer_create(GRect(bounds.size.w/2, bounds.size.h/2-(44/2), 120/2, 34));
+	text_layers[TEXT_LAYER_MINUTE] = text_layer_create(GRect(bounds.size.w/2+8, bounds.size.h/2-(46/2), bounds.size.w/2, 40));
   text_layer_set_text(text_layers[TEXT_LAYER_MINUTE], text_layer_buffers[TEXT_LAYER_MINUTE]);
-	text_layer_set_font(text_layers[TEXT_LAYER_MINUTE],fonts_get_system_font(FONT_KEY_BITHAM_34_MEDIUM_NUMBERS));
-	text_layer_set_text_alignment(text_layers[TEXT_LAYER_MINUTE],GTextAlignmentCenter);
+	text_layer_set_font(text_layers[TEXT_LAYER_MINUTE],fonts_get(FONT_MINUTE));
+	text_layer_set_text_alignment(text_layers[TEXT_LAYER_MINUTE],GTextAlignmentLeft);
 	text_layer_set_background_color(text_layers[TEXT_LAYER_MINUTE],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_MINUTE]));
 		

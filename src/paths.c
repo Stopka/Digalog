@@ -3,7 +3,6 @@
 
 #define PATHS_COUNT 2
 GPath* paths[PATHS_COUNT];
-
 	
 const GPathInfo HOUR_PATH_BASIC = {
   3,
