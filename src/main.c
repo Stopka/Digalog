@@ -1,9 +1,11 @@
 #include "bitmap-loader.h"
 #include "window_main.h"
+#include "paths.h"
 
 void handle_init() {
 	bitmaps_init();
-	
+	paths_init();
+		
 	window_main_init();
 	
 	window_main_show();
@@ -12,6 +14,7 @@ void handle_init() {
 void handle_deinit() {
 	window_main_deinit();
 	
+	paths_init();
 	bitmaps_cleanup();
 }
 
