@@ -54,6 +54,10 @@ void window_main_deinit(){
 	window=NULL;
 }
 
+static void render_notifications(Layer *layer, GContext* ctx){
+	renderers_notifications(layer,ctx);
+}
+
 static void render_center(Layer *layer, GContext* ctx){
 	renderers_center(layer,ctx);
 }
@@ -72,13 +76,14 @@ void handle_tick(struct tm* tick_time, TimeUnits units_changed){
 		time_t now_time_t=time(NULL);	
 		tick_time=localtime(&now_time_t);
 	}
+	//Texts
 	renderers_text_hour(text_layers[TEXT_LAYER_HOUR],tick_time);
 	renderers_text_minute(text_layers[TEXT_LAYER_MINUTE],tick_time);
 	renderers_text_date(text_layers[TEXT_LAYER_DATE],tick_time);
 	renderers_text_day(text_layers[TEXT_LAYER_DAY],tick_time);
 	//Analog
-	//layer_mark_dirty(analog_time[0]);
-	//layer_mark_dirty(analog_time[1]);
+	layer_mark_dirty(layers[LAYER_HOUR]);
+	layer_mark_dirty(layers[LAYER_MINUTE]);
 }
 
 static void window_load(Window* window){
@@ -94,7 +99,7 @@ static void window_load(Window* window){
 	text_layers[TEXT_LAYER_HOUR] = builder_text_layer(GRect(-8, bounds.size.h/2-(46/2), bounds.size.w/2, 40),window_layer,3,GTextAlignmentRight,FONT_HOUR);
 	text_layers[TEXT_LAYER_MINUTE] = builder_text_layer(GRect(bounds.size.w/2+8, bounds.size.h/2-(46/2), bounds.size.w/2, 40),window_layer,3,GTextAlignmentLeft,FONT_MINUTE);
 	
-	layers[LAYER_NOTIFICATION]=builder_layer(GRect(0, 0, bounds.size.w, bounds.size.h),window_layer,render_center);
+	layers[LAYER_NOTIFICATION]=builder_layer(GRect(0, 0, bounds.size.w, bounds.size.h),window_layer,render_notifications);
 	layers[LAYER_CENTER]=builder_layer(GRect(0, (bounds.size.h-bounds.size.w)/2, bounds.size.w, bounds.size.w),window_layer,render_center);
 	layers[LAYER_HOUR]=builder_layer(GRect(0, 0, bounds.size.w, bounds.size.h),window_layer,render_hour);
 	layers[LAYER_MINUTE]=builder_layer(GRect(0, 0, bounds.size.w, bounds.size.h),window_layer,render_minute);

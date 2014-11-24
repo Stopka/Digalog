@@ -2,6 +2,11 @@
 #include "renderers.h"
 #include "paths.h"
 
+void renderers_notifications(Layer *layer, GContext* ctx){
+	GRect bounds = layer_get_bounds(layer);
+	
+}
+	
 void renderers_center(Layer *layer, GContext* ctx){
 	GRect bounds = layer_get_bounds(layer);
 	GPoint center = grect_center_point(&bounds);
