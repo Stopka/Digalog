@@ -97,7 +97,7 @@ static void window_load(Window* window){
 	layer_add_child(window_layer, bitmap_layer_get_layer(bitmap_layer));
 	
 	text_layer_buffers[TEXT_LAYER_DAY]=(char *)malloc(31*sizeof(char));
-	text_layers[TEXT_LAYER_DAY] = text_layer_create(GRect(0, -7, bounds.size.w, 28));
+	text_layers[TEXT_LAYER_DAY] = text_layer_create(GRect(0, -5, bounds.size.w, 28));
   text_layer_set_text(text_layers[TEXT_LAYER_DAY], text_layer_buffers[TEXT_LAYER_DAY]);
 	text_layer_set_font(text_layers[TEXT_LAYER_DAY],fonts_get(FONT_DAY));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DAY],GTextAlignmentCenter);
@@ -105,7 +105,7 @@ static void window_load(Window* window){
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_DAY]));
 	
 	text_layer_buffers[TEXT_LAYER_DATE]=(char *)malloc(31*sizeof(char));
-	text_layers[TEXT_LAYER_DATE] = text_layer_create(GRect(0, bounds.size.h-26, bounds.size.w, 24));
+	text_layers[TEXT_LAYER_DATE] = text_layer_create(GRect(0, bounds.size.h-24, bounds.size.w, 24));
   text_layer_set_text(text_layers[TEXT_LAYER_DATE], text_layer_buffers[TEXT_LAYER_DATE]);
 	text_layer_set_font(text_layers[TEXT_LAYER_DATE],fonts_get(FONT_DATE));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DATE],GTextAlignmentCenter);

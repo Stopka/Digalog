@@ -1,21 +1,20 @@
 #include <pebble.h>
 #include "fonts.h"
-GFont font;
+
+#define FONTS_COUNT 2
+GFont font[FONTS_COUNT];
 
 void fonts_init(){
-	font=fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_BOLD_38));
+	font[FONT_DATE]=fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_22));
+	font[FONT_MINUTE]=fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_BOLD_38));
 }
 
 GFont fonts_get(uint8_t i){
-	switch(i){
-		case FONT_DATE:
-			return fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD);
-		case FONT_DAY:
-			return fonts_get_system_font(FONT_KEY_GOTHIC_24);
-	}
-	return font; //FONT_HOUR FONT_MINUTE
+	return font[i];
 }
 
 void fonts_deinit(){
-	fonts_unload_custom_font(font);
+	for(uint8_t i=0;i<FONTS_COUNT;i++){
+		fonts_unload_custom_font(font[i]);
+	}
 }

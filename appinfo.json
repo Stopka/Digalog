@@ -9,6 +9,12 @@
     "resources": {
         "media": [
             {
+                "characterRegex": "[SMTWFdayunoeshrit.0-9]",
+                "file": "fonts/Roboto-Regular.ttf",
+                "name": "FONT_22",
+                "type": "font"
+            },
+            {
                 "file": "images/logo.png",
                 "menuIcon": true,
                 "name": "LOGO",
@@ -16,7 +22,6 @@
             },
             {
                 "characterRegex": "[0-9]",
-                "compatibility": "2.7",
                 "file": "fonts/Roboto-Bold.ttf",
                 "name": "FONT_BOLD_38",
                 "type": "font"
