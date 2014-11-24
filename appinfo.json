@@ -1,72 +1,75 @@
 {
-    "versionLabel": "3.1",
-    "uuid": "2d8c47f0-fd3f-4df4-927c-54483fd33196",
     "appKeys": {},
-    "longName": "Digalog",
-    "versionCode": 2,
     "capabilities": [
         ""
     ],
-    "shortName": "Digalog",
     "companyName": "Stopka",
-    "watchapp": {
-        "watchface": true
-    },
+    "longName": "Digalog",
+    "projectType": "native",
     "resources": {
         "media": [
             {
-                "type": "png",
-                "name": "BATTERY_CHARGING_FULL",
-                "file": "images/battery_charging_full.png"
-            },
-            {
-                "type": "png",
-                "name": "BLUETOOTH_NONE",
-                "file": "images/bluetooth_none.png"
-            },
-            {
-                "type": "png",
-                "name": "BATTERY_LOW",
-                "file": "images/battery_low.png"
-            },
-            {
-                "type": "png",
-                "name": "BATTERY_CHARGING_LOW",
-                "file": "images/battery_charging_low.png"
-            },
-            {
-                "type": "png",
-                "name": "BATTERY_FULL",
-                "file": "images/battery_full.png"
-            },
-            {
-                "type": "png",
-                "name": "BATTERY_EMPTY",
-                "file": "images/battery_empty.png"
-            },
-            {
-                "type": "png",
-                "name": "BACKGROUND",
-                "file": "images/background.png"
-            },
-            {
-                "characterRegex": "[SMTWFdayunoeshrit.0-9]",
-                "type": "font",
-                "name": "FONT_22",
-                "file": "fonts/Roboto-Regular.ttf"
+                "file": "images/logo.png",
+                "menuIcon": true,
+                "name": "LOGO",
+                "type": "png"
             },
             {
                 "characterRegex": "[0-9]",
-                "type": "font",
+                "compatibility": "2.7",
+                "file": "fonts/Roboto-Bold.ttf",
                 "name": "FONT_BOLD_38",
-                "file": "fonts/Roboto-Bold.ttf"
+                "type": "font"
             },
             {
-                "menuIcon": true,
-                "type": "png",
-                "name": "LOGO",
-                "file": "images/logo.png"
+                "characterRegex": "[SMTWFdayunoeshrit.0-9]",
+                "compatibility": "2.7",
+                "file": "fonts/Roboto-Regular.ttf",
+                "name": "FONT_22",
+                "type": "font"
+            },
+            {
+                "file": "images/background.png",
+                "name": "BACKGROUND",
+                "type": "png"
+            },
+            {
+                "file": "images/battery_empty.png",
+                "name": "BATTERY_EMPTY",
+                "type": "png"
+            },
+            {
+                "file": "images/battery_full.png",
+                "name": "BATTERY_FULL",
+                "type": "png"
+            },
+            {
+                "file": "images/battery_charging_low.png",
+                "name": "BATTERY_CHARGING_LOW",
+                "type": "png"
+            },
+            {
+                "file": "images/battery_low.png",
+                "name": "BATTERY_LOW",
+                "type": "png"
+            },
+            {
+                "file": "images/bluetooth_none.png",
+                "name": "BLUETOOTH_NONE",
+                "type": "png"
+            },
+            {
+                "file": "images/battery_charging_full.png",
+                "name": "BATTERY_CHARGING_FULL",
+                "type": "png"
             }
         ]
+    },
+    "shortName": "Digalog",
+    "uuid": "2d8c47f0-fd3f-4df4-927c-54483fd33196",
+    "versionCode": 6,
+    "versionLabel": "4.0",
+    "watchapp": {
+        "watchface": true
     }
 }
