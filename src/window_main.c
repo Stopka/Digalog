@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "window_main.h"
+#include "bitmap-loader.h"
 
 #define TEXT_LAYERS_COUNT 4
 #define TEXT_LAYER_DAY 0
@@ -12,7 +13,7 @@ char* text_layer_buffers[TEXT_LAYERS_COUNT];
 #define BITMAP_LAYERS_COUNT 3
 #define BITMAP_LAYER_BACKGROUND 0
 #define BITMAP_LAYER_NOTIFICATION 1 //2 items
-BitmapLayer* bitmap_layer[TEXT_LAYERS_COUNT];
+BitmapLayer* bitmap_layer;
 InverterLayer* inverter_layer;
 
 int battery_state=0;
@@ -70,32 +71,40 @@ static void window_load(Window* window){
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_frame(window_layer);
 	
+	bitmap_layer=bitmap_layer_create(GRect((bounds.size.w-130)/2, (bounds.size.h-130)/2, 130, 130));
+	bitmap_layer_set_bitmap(bitmap_layer,bitmaps_get_bitmap(RESOURCE_ID_BACKGROUND));
+	layer_add_child(window_layer, bitmap_layer_get_layer(bitmap_layer));
+	
 	text_layer_buffers[TEXT_LAYER_DAY]=(char *)malloc(31*sizeof(char));
-	text_layers[TEXT_LAYER_DAY] = text_layer_create(GRect(0, -5, bounds.size.w, 28));
+	text_layers[TEXT_LAYER_DAY] = text_layer_create(GRect(0, -7, bounds.size.w, 28));
   text_layer_set_text(text_layers[TEXT_LAYER_DAY], text_layer_buffers[TEXT_LAYER_DAY]);
 	text_layer_set_font(text_layers[TEXT_LAYER_DAY],fonts_get_system_font(FONT_KEY_GOTHIC_24));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DAY],GTextAlignmentCenter);
+	text_layer_set_background_color(text_layers[TEXT_LAYER_DAY],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_DAY]));
 	
 	text_layer_buffers[TEXT_LAYER_DATE]=(char *)malloc(31*sizeof(char));
-	text_layers[TEXT_LAYER_DATE] = text_layer_create(GRect(0, bounds.size.h-28, bounds.size.w, 24));
+	text_layers[TEXT_LAYER_DATE] = text_layer_create(GRect(0, bounds.size.h-26, bounds.size.w, 24));
   text_layer_set_text(text_layers[TEXT_LAYER_DATE], text_layer_buffers[TEXT_LAYER_DATE]);
 	text_layer_set_font(text_layers[TEXT_LAYER_DATE],fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_DATE],GTextAlignmentCenter);
+	text_layer_set_background_color(text_layers[TEXT_LAYER_DATE],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_DATE]));
 	
 	text_layer_buffers[TEXT_LAYER_HOUR]=(char *)malloc(3*sizeof(char));
-	text_layers[TEXT_LAYER_HOUR] = text_layer_create(GRect(0, bounds.size.h/2-(34/2), bounds.size.w/2, 34));
+	text_layers[TEXT_LAYER_HOUR] = text_layer_create(GRect(0, bounds.size.h/2-(44/2), bounds.size.w/2, 34));
   text_layer_set_text(text_layers[TEXT_LAYER_HOUR], text_layer_buffers[TEXT_LAYER_HOUR]);
 	text_layer_set_font(text_layers[TEXT_LAYER_HOUR],fonts_get_system_font(FONT_KEY_BITHAM_34_MEDIUM_NUMBERS));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_HOUR],GTextAlignmentCenter);
+	text_layer_set_background_color(text_layers[TEXT_LAYER_HOUR],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_HOUR]));
 	
 	text_layer_buffers[TEXT_LAYER_MINUTE]=(char *)malloc(3*sizeof(char));
-	text_layers[TEXT_LAYER_MINUTE] = text_layer_create(GRect(bounds.size.w/2, bounds.size.h/2-(34/2), bounds.size.w/2, 34));
+	text_layers[TEXT_LAYER_MINUTE] = text_layer_create(GRect(bounds.size.w/2, bounds.size.h/2-(44/2), bounds.size.w/2, 34));
   text_layer_set_text(text_layers[TEXT_LAYER_MINUTE], text_layer_buffers[TEXT_LAYER_MINUTE]);
 	text_layer_set_font(text_layers[TEXT_LAYER_MINUTE],fonts_get_system_font(FONT_KEY_BITHAM_34_MEDIUM_NUMBERS));
 	text_layer_set_text_alignment(text_layers[TEXT_LAYER_MINUTE],GTextAlignmentCenter);
+	text_layer_set_background_color(text_layers[TEXT_LAYER_MINUTE],GColorClear);
 	layer_add_child(window_layer, text_layer_get_layer(text_layers[TEXT_LAYER_MINUTE]));
 	
 	inverter_layer=inverter_layer_create(GRect(0,0, bounds.size.w, bounds.size.h));
@@ -105,7 +114,7 @@ static void window_load(Window* window){
 static void window_appear(Window *window) {
 	time_t now_time_t=time(NULL);	
 	struct tm* now_tm=localtime(&now_time_t);
-	handle_tick(now_tm,MINUTE_UNIT);
+	handle_tick(now_tm,MINUTE_UNIT);	
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_tick);
 }
 
@@ -122,5 +131,6 @@ static void window_unload(Window* window){
 			free(text_layer_buffers[i]);
 		}
 	}
+	bitmap_layer_destroy(bitmap_layer);
 	inverter_layer_destroy(inverter_layer);
 }
