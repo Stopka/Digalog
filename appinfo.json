@@ -9,6 +9,31 @@
     "resources": {
         "media": [
             {
+                "file": "images/activity.png",
+                "name": "ACTIVITY",
+                "type": "png"
+            },
+            {
+                "file": "images/none.png",
+                "name": "NONE",
+                "type": "png"
+            },
+            {
+                "file": "images/charging.png",
+                "name": "CHARGING",
+                "type": "png"
+            },
+            {
+                "file": "images/bluetooth.png",
+                "name": "BLUETOOTH",
+                "type": "png"
+            },
+            {
+                "file": "images/battery.png",
+                "name": "BATTERY",
+                "type": "png"
+            },
+            {
                 "characterRegex": "[SMTWFdayunoeshrit.0-9]",
                 "file": "fonts/Roboto-Regular.ttf",
                 "name": "FONT_22",
@@ -29,36 +54,6 @@
             {
                 "file": "images/background.png",
                 "name": "BACKGROUND",
-                "type": "png"
-            },
-            {
-                "file": "images/battery_empty.png",
-                "name": "BATTERY_EMPTY",
-                "type": "png"
-            },
-            {
-                "file": "images/battery_full.png",
-                "name": "BATTERY_FULL",
-                "type": "png"
-            },
-            {
-                "file": "images/battery_charging_low.png",
-                "name": "BATTERY_CHARGING_LOW",
-                "type": "png"
-            },
-            {
-                "file": "images/battery_low.png",
-                "name": "BATTERY_LOW",
-                "type": "png"
-            },
-            {
-                "file": "images/bluetooth_none.png",
-                "name": "BLUETOOTH_NONE",
-                "type": "png"
-            },
-            {
-                "file": "images/battery_charging_full.png",
-                "name": "BATTERY_CHARGING_FULL",
                 "type": "png"
             }
         ]
