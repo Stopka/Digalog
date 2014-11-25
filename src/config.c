@@ -14,7 +14,7 @@ void config_set_default(){
 	config.battery.plugged=true;
 	config.battery.charging=true;
 	
-	//config.power.plugged.on.show=true;
+	config.power.plugged.on.show=true;
 	config.power.charging.show=true;
 }
 
