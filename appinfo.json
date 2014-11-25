@@ -9,8 +9,8 @@
     "resources": {
         "media": [
             {
-                "file": "images/activity.png",
-                "name": "ACTIVITY",
+                "file": "images/plugged.png",
+                "name": "PLUGGED",
                 "type": "png"
             },
             {

@@ -51,17 +51,32 @@ void renderers_notification_power(GRect bounds, GContext* ctx){
 				GRect(bounds.origin.x+(bounds.size.w-6)/2,bounds.origin.y+(bounds.size.h-10)/2,6,10)
 			);
 			return;
+		case MODEL_POWER_PLUGGED:
+			graphics_draw_bitmap_in_rect(	ctx,
+				bitmaps_get_bitmap(RESOURCE_ID_PLUGGED),
+				GRect(bounds.origin.x+(bounds.size.w-9)/2,bounds.origin.y+(bounds.size.h-6)/2,9,6)
+			);
+			return;
+		case MODEL_POWER_UNPLUGGED:
+			graphics_draw_bitmap_in_rect(	ctx,
+				bitmaps_get_bitmap(RESOURCE_ID_PLUGGED),
+				GRect(bounds.origin.x+(bounds.size.w-14)/2,bounds.origin.y+(bounds.size.h-6)/2,9,6)
+			);
+			graphics_draw_bitmap_in_rect(	ctx,
+				bitmaps_get_bitmap(RESOURCE_ID_NONE),
+				GRect(bounds.origin.x+bounds.size.w-9,bounds.origin.y+(bounds.size.h-9)/2,9,9)
+			);
+			return;
 		default:
 			return;
 	}
-	//TODO MODEL_POWER_NONE,MODEL_POWER_PLUGGED,MODEL_POWER_UNPLUGGED ignored
 }
 	
 void renderers_notifications(Layer *layer, GContext* ctx){
 	GRect bounds = layer_get_bounds(layer);
 	if(model_power()!=MODEL_POWER_NONE&&model_battery()>=0){
-		renderers_notification_power(GRect((bounds.size.w-32)/2,(bounds.size.h-16)/2-33,16,16), ctx);
-		renderers_notification_battery(GRect((bounds.size.w-32)/2+16,(bounds.size.h-16)/2-33,16,16), ctx);
+		renderers_notification_power(GRect((bounds.size.w-34)/2,(bounds.size.h-16)/2-33,16,16), ctx);
+		renderers_notification_battery(GRect((bounds.size.w-34)/2+18,(bounds.size.h-16)/2-33,16,16), ctx);
 	}else{
 		renderers_notification_battery(GRect((bounds.size.w-16)/2,(bounds.size.h-16)/2-33,16,16), ctx);
 		renderers_notification_power(GRect((bounds.size.w-16)/2,(bounds.size.h-16)/2-33,16,16), ctx);

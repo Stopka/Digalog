@@ -9,8 +9,6 @@ void config_set_default(){
 	config.bluetooth.off.notify.vibrate=CONFIG_VIBRATE_DOUBLE;
 	config.bluetooth.off.show=true;
 	
-	//config.activity=;
-	
 	config.battery.low=-1;
 	config.battery.show=15;
 	config.battery.plugged=true;

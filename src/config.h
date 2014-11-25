@@ -37,7 +37,6 @@ typedef struct ConfigPower {
 typedef struct Config {
 	bool black;
   ConfigBool bluetooth;
-	ConfigBool activity;
 	ConfigBattery battery;
 	ConfigPower power;
 	ConfigNotify hour;
