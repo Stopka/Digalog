@@ -1,10 +1,72 @@
 #include <pebble.h>
 #include "renderers.h"
 #include "paths.h"
+#include "bitmap-loader.h"
 
+void renderers_notification_bluetooth(GRect bounds, GContext* ctx){
+	ModelBluetooth state=model_bluetooth();
+	switch(state){
+		case MODEL_BLUETOOTH_CONNECTED:
+			graphics_draw_bitmap_in_rect(	ctx,
+				bitmaps_get_bitmap(RESOURCE_ID_BLUETOOTH),
+				GRect(bounds.origin.x+(bounds.size.w-9)/2,bounds.origin.y+(bounds.size.h-16)/2,9,16)
+			);
+			return;
+		case MODEL_BLUETOOTH_DISCONNECTED:
+			graphics_draw_bitmap_in_rect(	ctx,
+				bitmaps_get_bitmap(RESOURCE_ID_BLUETOOTH),
+				GRect(bounds.origin.x+0,bounds.origin.y+(bounds.size.h-16)/2,9,16)
+			);
+			graphics_draw_bitmap_in_rect(	ctx,
+				bitmaps_get_bitmap(RESOURCE_ID_NONE),
+				GRect(bounds.origin.x+bounds.size.w-9,bounds.origin.y+(bounds.size.h-9)/2,9,9)
+			);
+			return;
+		default:
+			return;
+	}
+}
+
+void renderers_notification_battery(GRect bounds, GContext* ctx){
+	int8_t state=model_battery();
+	if(state<0){
+		return;
+	}
+	graphics_draw_bitmap_in_rect(ctx,
+		bitmaps_get_bitmap(RESOURCE_ID_BATTERY),
+		GRect(bounds.origin.x+(bounds.size.w-15)/2,bounds.origin.y+(bounds.size.h-8)/2,15,8)
+	);
+	graphics_fill_rect(ctx,
+		GRect((bounds.origin.x+(bounds.size.w-15)/2)+2,(bounds.origin.y+(bounds.size.h-8)/2)+2,11*state/100,4),
+		0,GCornerNone
+	);
+}
+
+void renderers_notification_power(GRect bounds, GContext* ctx){
+	ModelPower state=model_power();
+	switch(state){
+		case MODEL_POWER_CHARGING:
+			graphics_draw_bitmap_in_rect(	ctx,
+				bitmaps_get_bitmap(RESOURCE_ID_CHARGING),
+				GRect(bounds.origin.x+(bounds.size.w-6)/2,bounds.origin.y+(bounds.size.h-10)/2,6,10)
+			);
+			return;
+		default:
+			return;
+	}
+	//TODO MODEL_POWER_NONE,MODEL_POWER_PLUGGED,MODEL_POWER_UNPLUGGED ignored
+}
+	
 void renderers_notifications(Layer *layer, GContext* ctx){
 	GRect bounds = layer_get_bounds(layer);
-	
+	if(model_power()!=MODEL_POWER_NONE&&model_battery()>=0){
+		renderers_notification_power(GRect((bounds.size.w-32)/2,(bounds.size.h-16)/2-33,16,16), ctx);
+		renderers_notification_battery(GRect((bounds.size.w-32)/2+16,(bounds.size.h-16)/2-33,16,16), ctx);
+	}else{
+		renderers_notification_battery(GRect((bounds.size.w-16)/2,(bounds.size.h-16)/2-33,16,16), ctx);
+		renderers_notification_power(GRect((bounds.size.w-16)/2,(bounds.size.h-16)/2-33,16,16), ctx);
+	}
+	renderers_notification_bluetooth(GRect((bounds.size.w-16)/2,(bounds.size.h-16)/2+33,16,16), ctx);
 }
 	
 void renderers_center(Layer *layer, GContext* ctx){

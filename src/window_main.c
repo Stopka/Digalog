@@ -72,10 +72,7 @@ static void render_hour(Layer *layer, GContext* ctx){
 
 
 void handle_tick(struct tm* tick_time, TimeUnits units_changed){
-	if(tick_time==NULL){
-		time_t now_time_t=time(NULL);	
-		tick_time=localtime(&now_time_t);
-	}
+	tick_time =  model_handle_tick(tick_time,units_changed);
 	//Texts
 	renderers_text_hour(text_layers[TEXT_LAYER_HOUR],tick_time);
 	renderers_text_minute(text_layers[TEXT_LAYER_MINUTE],tick_time);
@@ -84,6 +81,16 @@ void handle_tick(struct tm* tick_time, TimeUnits units_changed){
 	//Analog
 	layer_mark_dirty(layers[LAYER_HOUR]);
 	layer_mark_dirty(layers[LAYER_MINUTE]);
+}
+
+static void handle_bluetooth(bool connected){
+	model_handle_bluetooth(connected);
+	layer_mark_dirty(layers[LAYER_NOTIFICATION]);
+}
+
+static void handle_battery(BatteryChargeState charge){
+	model_handle_battery(charge);
+	layer_mark_dirty(layers[LAYER_NOTIFICATION]);
 }
 
 static void window_load(Window* window){
@@ -109,12 +116,17 @@ static void window_load(Window* window){
 }
 
 static void window_appear(Window *window) {
+	model_handle_appear();
 	handle_tick(NULL,MINUTE_UNIT);	
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_tick);
+	bluetooth_connection_service_subscribe(handle_bluetooth);
+	battery_state_service_subscribe(handle_battery);
 }
 
 static void window_disappear(Window *window) {
 	tick_timer_service_unsubscribe();
+	bluetooth_connection_service_unsubscribe();
+	battery_state_service_unsubscribe();
 }
 
 

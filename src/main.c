@@ -2,8 +2,11 @@
 #include "window_main.h"
 #include "paths.h"
 #include "fonts.h"
+#include "model.h"
 
 void handle_init() {
+	model_init();
+	
 	bitmaps_init();
 	paths_init();
 	fonts_init();
@@ -19,6 +22,8 @@ void handle_deinit() {
 	paths_deinit();
 	fonts_deinit();
 	bitmaps_cleanup();
+	
+	model_init();
 }
 
 int main() {
