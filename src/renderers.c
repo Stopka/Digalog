@@ -37,7 +37,7 @@ void renderers_notification_battery(GRect bounds, GContext* ctx){
 		GRect(bounds.origin.x+(bounds.size.w-15)/2,bounds.origin.y+(bounds.size.h-8)/2,15,8)
 	);
 	graphics_fill_rect(ctx,
-		GRect((bounds.origin.x+(bounds.size.w-15)/2)+2,(bounds.origin.y+(bounds.size.h-8)/2)+2,11*state/100,4),
+		GRect((bounds.origin.x+(bounds.size.w-15)/2)+2,(bounds.origin.y+(bounds.size.h-8)/2)+2,10*state/100,4),
 		0,GCornerNone
 	);
 }

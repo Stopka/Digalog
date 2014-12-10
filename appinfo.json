@@ -9,40 +9,8 @@
     "resources": {
         "media": [
             {
-                "file": "images/plugged.png",
-                "name": "PLUGGED",
-                "type": "png"
-            },
-            {
-                "file": "images/none.png",
-                "name": "NONE",
-                "type": "png"
-            },
-            {
-                "file": "images/charging.png",
-                "name": "CHARGING",
-                "type": "png"
-            },
-            {
-                "file": "images/bluetooth.png",
-                "name": "BLUETOOTH",
-                "type": "png"
-            },
-            {
-                "file": "images/battery.png",
-                "name": "BATTERY",
-                "type": "png"
-            },
-            {
-                "characterRegex": "[SMTWFdayunoeshrit.0-9]",
-                "file": "fonts/Roboto-Regular.ttf",
-                "name": "FONT_22",
-                "type": "font"
-            },
-            {
-                "file": "images/logo.png",
-                "menuIcon": true,
-                "name": "LOGO",
+                "file": "images/background.png",
+                "name": "BACKGROUND",
                 "type": "png"
             },
             {
@@ -52,8 +20,40 @@
                 "type": "font"
             },
             {
-                "file": "images/background.png",
-                "name": "BACKGROUND",
+                "file": "images/logo.png",
+                "menuIcon": true,
+                "name": "LOGO",
+                "type": "png"
+            },
+            {
+                "characterRegex": ".",
+                "file": "fonts/Roboto-Regular.ttf",
+                "name": "FONT_22",
+                "type": "font"
+            },
+            {
+                "file": "images/battery.png",
+                "name": "BATTERY",
+                "type": "png"
+            },
+            {
+                "file": "images/bluetooth.png",
+                "name": "BLUETOOTH",
+                "type": "png"
+            },
+            {
+                "file": "images/charging.png",
+                "name": "CHARGING",
+                "type": "png"
+            },
+            {
+                "file": "images/none.png",
+                "name": "NONE",
+                "type": "png"
+            },
+            {
+                "file": "images/plugged.png",
+                "name": "PLUGGED",
                 "type": "png"
             }
         ]

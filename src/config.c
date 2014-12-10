@@ -23,8 +23,11 @@ Config config_get(){
 }
 
 void config_init(){
+	setlocale(LC_ALL, "");
+	
 	config_set_default();
 	//TODO load config
+	
 }
 
 void config_deinit(){
